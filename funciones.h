@@ -27,7 +27,7 @@ int sumarDados(int vDados[]);
 
 void ordenarDados(int vDados[], int tam);
 
-bool escalera(int vDados[]);
+bool escalera(int vDados[], int tam);
 
 bool seisDeSeis(int vDados[]);
 
@@ -113,9 +113,9 @@ void ordenarDados(int vDados[], int tam) {
 	//}
 }
 
-bool escalera(int vDados[]) {
+bool escalera(int vDados[], int tam) {
 
-	ordenarDados(vDados, 6);
+	ordenarDados(vDados, tam);
 
 	int contador = 0;
 	for (int i = 0; i < 6; i++)
@@ -127,7 +127,7 @@ bool escalera(int vDados[]) {
 
 	if (contador == 6)
 	{
-		cout << "escalera";
+		//cout << "escalera";
 		return true;
 	}
 	else
@@ -164,7 +164,7 @@ bool seisIguales(int vDados[]) {
 			repetidos++;
 		}
 	}
-	if (repetidos == 5 && vDados[0] != 6)
+	if (repetidos == 5)
 	{
 		//cout << "Seis dados iguales";
 		return true;
@@ -178,23 +178,26 @@ bool seisIguales(int vDados[]) {
 int calcularPuntos(int vDados[], int tam) {
 	int calculo = 0;
 
-	if (seisDeSeis(vDados))
+	if (escalera(vDados, tam)) {
+		calculo = 100;
+	}
+	else if (seisDeSeis(vDados))
 	{
 		//Seis dados SEIS, devuelve 0
-		return calculo;
+		calculo = 0;
 	}
 	else if (seisIguales(vDados))
 	{
 		//Seis dados IGUALES, devuelve valor repetido * 10
 		calculo = vDados[0] * 10;
-		return calculo;
 	}
 	else
 	{
 		//Sumar todos los dados
 		calculo = sumarDados(vDados);
-		return calculo;
 	}
+
+	return calculo;
 }
 
 int jugarSimulado(int vDados[], int tirarDadosManual, int sumarDados, int ordenarDados, int escalera, int seisDeseis, int seisIguales, int tam)

@@ -19,7 +19,5 @@ int main()
 	mostrarDados(vector, 6);
 	calcularPuntos(vector, 6);*/
 
-	//PRUEBA DE COMMIT
-
 	return 0;
 }
