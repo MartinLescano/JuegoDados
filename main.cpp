@@ -11,13 +11,5 @@ int main()
 	
 	menu();
 
-	/*int vector[6] = { 6,2,4,5,3,1 };
-	escalera(vector);
-	seisDeSeis(vector);
-	seisIguales(vector);
-	cout << endl;
-	mostrarDados(vector, 6);
-	calcularPuntos(vector, 6);*/
-
 	return 0;
 }

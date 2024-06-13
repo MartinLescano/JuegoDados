@@ -8,13 +8,15 @@ using namespace std;
 
 //DECLARACION DE FUNCIONES
 
-void pedirNombre(string& nombre); //Asigna el nombre ingresado a una variable por referencia
+//void pedirNombre(string& nombre); //Asigna el nombre ingresado a una variable por referencia
+
+void pedirNombre(string nombreJugador[], int opcion); //Asigna el nombre ingresado a una variable por referencia
 
 void tirarDados(int vDados[], int tam); //Carga un vector de un tamaño especificado con numeros aleatorios 1-6, recibe una constante por valor de la cantidad de lanzamientos por turno
 
 void mostrarDados(int vDados[], int tam); //Muestra los valores obtenidos
 
-void jugar(int puntajeObjetivo, int lanzamientosPorRonda, int cantidadDados, int vDados[]); // Llama a las demas funciones hasta que la partida termina
+void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]); // Llama a las demas funciones hasta que la partida termina
 
 void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion); // Muestra la puntuacion maxima lograda y el usuario correspondiente
 
@@ -22,7 +24,9 @@ int calcularPuntos(int vDados[], int tam, int PUNTAJEOBJETIVO); // Devuelve los 
 
 void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPuntajeRonda, int nroLanzamiento); // Muestra la interfaz de usuario durante los lanzamientos
 
-void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal); // Muestra la interfaz del o los usuarios entre los turnos
+//void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal); // Muestra la interfaz del o los usuarios entre los turnos
+
+void  mostrarInterfazEntreTurno(int ronda, string nombre[], int indice, int totalJ1, int totalJ2);
 
 int sumarDados(int vDados[]);
 
@@ -41,14 +45,38 @@ void copiarTirarDados(int vDados[], int vDados2[], int tam);//Copia la funcion t
 
 //IMPLEMENTACION DE FUNCIONES
 
-void pedirNombre(string& nombre) {
-	system("cls");
-	cout << "Ingresar nombre del jugador: ";
+//void pedirNombre(string& nombre) {
+//	system("cls");
+//	cout << "Ingresar nombre del jugador: ";
+//
+//	cin.ignore();
+//	getline(cin, nombre);
+//
+//	system("cls");
+//}
 
-	cin.ignore();
-	getline(cin, nombre);
+void pedirNombre(string nombreJugador[], int opcion) {
+	string nombreJug;
 
-	system("cls");
+	if (opcion == 1) //si la opción es '1' completa al segundo jugador como "CPU"
+	{
+		cout << "Ingresar nombre para Jugador 1: ";
+		cin.ignore();
+		getline(cin, nombreJug);
+		nombreJugador[0] = nombreJug;
+		nombreJugador[1] = "CPU";
+	}
+	else  // Sino, permite ingresar un segundo nombre
+	{
+		cout << "Ingresar nombre para Jugador 1: ";
+		cin.ignore();
+		getline(cin, nombreJug);
+		nombreJugador[0] = nombreJug;
+
+		cout << "Ingresar nombre para Jugador 2: ";
+		getline(cin, nombreJug);
+		nombreJugador[1] = nombreJug;
+	}
 }
 
 void tirarDados(int vDados[], int tam) {
@@ -71,19 +99,32 @@ void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPu
 	cout << "-------------------------------------------------------------------" << endl;
 }
 
-void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal) {
+//void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal) {
+//
+//	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
+//	cout << "'                                                         '" << endl;
+//	cout << "'                     RONDA Nº                            '" << endl;
+//	cout << "'                PROXIMO TURNO: JAVIER                    '" << endl;
+//	cout << "'                                                         '" << endl;
+//	cout << "'               PUNTAJE MARTA: 70 PUNTOS                  '" << endl;
+//	cout << "'                                                         '" << endl;
+//	cout << "'               PUNTAJE JAVIER: 70 PUNTOS                 '" << endl;
+//	cout << "'                                                         '" << endl;
+//	cout << "'- - - - - - - - - - - - - - - - - - - - - - - - - - - - -'" << endl;
+//
+//}
 
-	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
-	cout << "'                                                         '" << endl;
-	cout << "'                     RONDA Nº                            '" << endl;
-	cout << "'                PROXIMO TURNO: JAVIER                    '" << endl;
-	cout << "'                                                         '" << endl;
-	cout << "'               PUNTAJE MARTA: 70 PUNTOS                  '" << endl;
-	cout << "'                                                         '" << endl;
-	cout << "'               PUNTAJE JAVIER: 70 PUNTOS                 '" << endl;
-	cout << "'                                                         '" << endl;
-	cout << "'- - - - - - - - - - - - - - - - - - - - - - - - - - - - -'" << endl;
-
+void  mostrarInterfazEntreTurno(int ronda, string nombre[], int indice, int totalJ1, int totalJ2) {
+	cout << "*-----------------------------------------*" << endl;
+	cout << "              RONDA N° " << ronda << endl;
+	cout << "        PROXIMO TURNO: " << nombre[indice] << endl;
+	cout << endl;
+	cout << "        PUNTAJE " << nombre[0] << ": " << totalJ1 << " PUNTOS" << endl;
+	cout << "        PUNTAJE " << nombre[1] << ": " << totalJ2 << " PUNTOS" << endl;
+	cout << endl;
+	cout << "*------------------**---------------------*" << endl;
+	system("pause"); 
+	system("cls");
 }
 
 void mostrarDados(int vDados[], int tam)
@@ -311,55 +352,97 @@ void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion) {
 	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
 }
 
-void jugar(int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
-	string nombreJugador;
-	pedirNombre(nombreJugador);
+void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
 
 	int puntajeTotal = 0, ronda = 1; //Inicialización de variables
 	int puntajeLanzamiento;
 
+	//A CADA JUGADOR LE CORRESPONDE UN INDICE DE MAXIMO PUNTAJE Y DE TOTAL
+	int vMaxPuntajeRonda[2] = { 0 }, vTotal[2] = { 0 };
+
+	pedirNombre(nombreJugador, opcion);
+
 	//CICLO DE RONDAS
 	while (puntajeTotal < PUNTAJE_OBJETIVO) {
+		
 		int maxPuntajeRonda = 0;
 		system("cls");
 
 		//CICLO DE LANZAMIENTOS DE DADOS
 		for (int i = 0; i < LANZAMIENTOS_POR_RONDA; i++) {
-			tirarDados(vDados, CANTIDAD_DADOS);
-			puntajeLanzamiento = calcularPuntos(vDados, CANTIDAD_DADOS, PUNTAJE_OBJETIVO);
+			
+			//CICLO  PARA INTERCALAR LANZAMIENTOS
+			for (int j = 0; j < 2; j++) {
 
-			if (puntajeLanzamiento == PUNTAJE_OBJETIVO) { //Si hay escalera, gana la partida
-				maxPuntajeRonda = puntajeLanzamiento;
-				mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
+				mostrarInterfazEntreTurno(ronda, nombreJugador, j, vTotal[0], vTotal[1]);
+
+				tirarDados(vDados, CANTIDAD_DADOS);
+				puntajeLanzamiento = calcularPuntos(vDados, CANTIDAD_DADOS, PUNTAJE_OBJETIVO);
+
+				if (puntajeLanzamiento == PUNTAJE_OBJETIVO) { //Si hay escalera, gana la partida
+					vMaxPuntajeRonda[j] = puntajeLanzamiento;
+
+					mostrarInterfazTurno(nombreJugador[j], ronda, vTotal[j], vMaxPuntajeRonda[j], i + 1);
+					mostrarDados(vDados, CANTIDAD_DADOS);
+					cout << "\n¡ESCALERA! !GANASTE LA PARTIDA¡" << endl;
+					break; //Sale del ciclo for
+				}
+				else if (puntajeLanzamiento == 0) { //Si hay seis 6, resetea el puntaje a 0
+					vMaxPuntajeRonda[j] = puntajeLanzamiento;
+					vTotal[j] = 0;
+					mostrarInterfazTurno(nombreJugador[j], ronda, vTotal[j], vMaxPuntajeRonda[j], i + 1);
+					mostrarDados(vDados, CANTIDAD_DADOS);
+					cout << "\nSEIS DE SEIS! TU PUNTAJE TOTAL FUE REINICIADO A CERO!\n" << endl;
+					system("pause");
+					continue; //Pasa a la siguiente iteración
+				}
+				else if (puntajeLanzamiento > vMaxPuntajeRonda[j]) {
+					vMaxPuntajeRonda[j] = puntajeLanzamiento;
+				}
+				mostrarInterfazTurno(nombreJugador[j], ronda, vTotal[j], vMaxPuntajeRonda[j], i + 1);
 				mostrarDados(vDados, CANTIDAD_DADOS);
-				cout << "\n¡ESCALERA! !GANASTE LA PARTIDA¡" << endl;
-				break; //Sale del ciclo for
-			}
-			else if (puntajeLanzamiento == 0) { //Si hay seis 6, resetea el puntaje a 0
-				maxPuntajeRonda = puntajeLanzamiento;
-				puntajeTotal = 0;
-				mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
-				mostrarDados(vDados, CANTIDAD_DADOS);
-				cout << "\nSEIS DE SEIS! TU PUNTAJE TOTAL FUE REINICIADO A CERO!\n" << endl;
 				system("pause");
-				continue; //Pasa a la siguiente iteración
+				system("cls");
 			}
-			else if (puntajeLanzamiento > maxPuntajeRonda)
-				maxPuntajeRonda = puntajeLanzamiento;
 
-			mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
-			mostrarDados(vDados, CANTIDAD_DADOS);
-
-			system("pause");
 		}
-		puntajeTotal += maxPuntajeRonda;
-		cout << "\nFIN DE LA RONDA NRO. " << ronda << "  |  PUNTAJE SUMADO: " << maxPuntajeRonda << endl;
+
+		//Termina la ronda y asigna al total de cada jugador el mayor puntaje obtenido en la ronda.
+		vTotal[0] += vMaxPuntajeRonda[0]; 
+		vTotal[1] += vMaxPuntajeRonda[1];
+
+		// Resetea el máximo puntaje de la ronda finalizada.
+		for (int i = 0; i < 2; i++) 
+		{
+			vMaxPuntajeRonda[i] = 0;
+		}
+
+		//IF para ver si la suma de cada uno llegó a 100 puntos
+		if (vTotal[0] >= 100)
+		{
+			cout << "*-----------------------------------------*" << endl;
+			cout << "\nFELICIDADES " << nombreJugador[0] << "! GANASTE LA PARTIDA!" << endl;
+			cout << "PUNTAJE FINAL: " << vTotal[0] << endl;
+			cout << "TOTAL DE RONDAS: " << ronda << endl;
+			cout << "*-----------------------------------------*" << endl;
+			system("pause");
+			break;
+		}
+		else if (vTotal[1] >= 100)
+		{
+			cout << "*-----------------------------------------*" << endl;
+			cout << "\nFELICIDADES " << nombreJugador[1] << "! GANASTE LA PARTIDA!" << endl;
+			cout << "PUNTAJE FINAL: " << vTotal[1] << endl;
+			cout << "TOTAL DE RONDAS: " << ronda << endl;
+			cout << "*-----------------------------------------*" << endl;
+			system("pause");
+			break;
+		}
+
 		ronda++;
-		system("pause");
+		//system("pause");
 	}
 
-	cout << "\nFELICIDADES " << nombreJugador << "! GANASTE LA PARTIDA!" << endl;
-	cout << "PUNTAJE FINAL: " << puntajeTotal << endl;
 }
 
 #endif // FUNCIONES_H_INCLUDED

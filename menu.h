@@ -11,8 +11,8 @@ void menu();
 void menu() {
     int opcion;
     int vDados[6] = { 0 };
-    string jugador1, jugador2, cpu = "CPU";
-    string nombre[2] = {};
+
+    string nombreJugador[2] = {};
 
     while (true) {
         system("cls");
@@ -29,15 +29,15 @@ void menu() {
 
         switch (opcion) {
         case 1:
-            jugar(PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
+            jugar(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
             break;
 
         case 2:
-
+            jugar(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
             break;
 
         case 3:
-            mostrarMaxPuntuacion(usuarioMaxPuntuacion, maxPuntuacion);
+            
             break;
 
         case 0:
