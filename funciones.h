@@ -2,6 +2,7 @@
 #define FUNCIONES_H_INCLUDED
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -13,11 +14,11 @@ void tirarDados(int vDados[], int tam); //Carga un vector de un tamaño especific
 
 void mostrarDados(int vDados[], int tam); //Muestra los valores obtenidos
 
-void jugar(int puntajeObjetivo, int lanzamientosPorRonda, int cantidadDados); // Llama a las demas funciones hasta que la partida termina
+void jugar(int puntajeObjetivo, int lanzamientosPorRonda, int cantidadDados, int vDados[]); // Llama a las demas funciones hasta que la partida termina
 
 void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion); // Muestra la puntuacion maxima lograda y el usuario correspondiente
 
-int calcularPuntos(int vDados[], int tam); // Devuelve los puntos segun las combinaciones de los dados
+int calcularPuntos(int vDados[], int tam, int PUNTAJEOBJETIVO); // Devuelve los puntos segun las combinaciones de los dados
 
 void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPuntajeRonda, int nroLanzamiento); // Muestra la interfaz de usuario durante los lanzamientos
 
@@ -43,7 +44,10 @@ void copiarTirarDados(int vDados[], int vDados2[], int tam);//Copia la funcion t
 void pedirNombre(string& nombre) {
 	system("cls");
 	cout << "Ingresar nombre del jugador: ";
-	cin >> nombre;
+
+	cin.ignore();
+	getline(cin, nombre);
+
 	system("cls");
 }
 
@@ -54,14 +58,17 @@ void tirarDados(int vDados[], int tam) {
 }
 
 void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPuntajeRonda, int nroLanzamiento) {
+	system("cls");
 
-	cout << "TURNO DE"; cout << "  |  "; cout << "RONDA Nº"; cout << "  |  "; cout << "PUNTAJE TOTAL: " << "PUNTOS" << endl;
+	cout << "TURNO DE " << usuario;
+	cout << "  |  ";
+	cout << "RONDA Nro " << ronda;
+	cout << "  |  ";
+	cout << "PUNTAJE TOTAL: " << puntajeTotal << " PUNTOS" << endl;
 	cout << "-------------------------------------------------------------------" << endl;
-	cout << "MAXIMO PUNTAJE DE LA RONDA:" << "   PUNTOS" << endl;
-	cout << "LANZAMIENTO Nº" << endl;
+	cout << "MAXIMO PUNTAJE DE LA RONDA: " << maxPuntajeRonda << " PUNTOS" << endl;
+	cout << "LANZAMIENTO Nro " << nroLanzamiento << endl;
 	cout << "-------------------------------------------------------------------" << endl;
-
-
 }
 
 void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal) {
@@ -116,20 +123,21 @@ void ordenarDados(int vDados[], int tam) {
 }
 
 bool escalera(int vDados[], int tam) {
+	int vDadosCopia[6];  //CREA UNA COPIA DEL VECTOR DADOS
 
-	ordenarDados(vDados, tam);
+	copiarTirarDados(vDados, vDadosCopia, tam);
+
+	ordenarDados(vDadosCopia, tam); //ORDENA LA COPIA PARA VERIFICAR SI HAY ESCALERA, SIN AFECTAR EL VECTOR ORIGINAL
 
 	int contador = 0;
-	for (int i = 0; i < 6; i++)
-	{
-		if (vDados[i] == i + 1) {
+	for (int i = 0; i < 6; i++) {
+		if (vDadosCopia[i] == i + 1) {
 			contador++;
 		}
 	}
 
-	if (contador == 6)
-	{
-		//cout << "escalera";
+	if (contador == 6) {
+		//cout << "escalera" << endl; //PRUEBA
 		return true;
 	}
 	else
@@ -177,24 +185,21 @@ bool seisIguales(int vDados[]) {
 	}
 }
 
-int calcularPuntos(int vDados[], int tam) {
-	int calculo = 0;
+int calcularPuntos(int vDados[], int tam, int PUNTAJEOBJETIVO) {
+	int calculo = -1;
 
 	if (escalera(vDados, tam)) {
-		calculo = 100;
+		calculo = PUNTAJEOBJETIVO;
 	}
-	else if (seisDeSeis(vDados))
-	{
+	else if (seisDeSeis(vDados)) {
 		//Seis dados SEIS, devuelve 0
 		calculo = 0;
 	}
-	else if (seisIguales(vDados))
-	{
+	else if (seisIguales(vDados)) {
 		//Seis dados IGUALES, devuelve valor repetido * 10
 		calculo = vDados[0] * 10;
 	}
-	else
-	{
+	else {
 		//Sumar todos los dados
 		calculo = sumarDados(vDados);
 	}
@@ -304,6 +309,57 @@ void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion) {
 	cout << "              PUNTOS: " << maxPuntuacion << "PUNTOS" << endl;
 	cout << "                                                           " << endl;
 	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
+}
+
+void jugar(int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
+	string nombreJugador;
+	pedirNombre(nombreJugador);
+
+	int puntajeTotal = 0, ronda = 1; //Inicialización de variables
+	int puntajeLanzamiento;
+
+	//CICLO DE RONDAS
+	while (puntajeTotal < PUNTAJE_OBJETIVO) {
+		int maxPuntajeRonda = 0;
+		system("cls");
+
+		//CICLO DE LANZAMIENTOS DE DADOS
+		for (int i = 0; i < LANZAMIENTOS_POR_RONDA; i++) {
+			tirarDados(vDados, CANTIDAD_DADOS);
+			puntajeLanzamiento = calcularPuntos(vDados, CANTIDAD_DADOS, PUNTAJE_OBJETIVO);
+
+			if (puntajeLanzamiento == PUNTAJE_OBJETIVO) { //Si hay escalera, gana la partida
+				maxPuntajeRonda = puntajeLanzamiento;
+				mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
+				mostrarDados(vDados, CANTIDAD_DADOS);
+				cout << "\n¡ESCALERA! !GANASTE LA PARTIDA¡" << endl;
+				break; //Sale del ciclo for
+			}
+			else if (puntajeLanzamiento == 0) { //Si hay seis 6, resetea el puntaje a 0
+				maxPuntajeRonda = puntajeLanzamiento;
+				puntajeTotal = 0;
+				mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
+				mostrarDados(vDados, CANTIDAD_DADOS);
+				cout << "\nSEIS DE SEIS! TU PUNTAJE TOTAL FUE REINICIADO A CERO!\n" << endl;
+				system("pause");
+				continue; //Pasa a la siguiente iteración
+			}
+			else if (puntajeLanzamiento > maxPuntajeRonda)
+				maxPuntajeRonda = puntajeLanzamiento;
+
+			mostrarInterfazTurno(nombreJugador, ronda, puntajeTotal, maxPuntajeRonda, i + 1);
+			mostrarDados(vDados, CANTIDAD_DADOS);
+
+			system("pause");
+		}
+		puntajeTotal += maxPuntajeRonda;
+		cout << "\nFIN DE LA RONDA NRO. " << ronda << "  |  PUNTAJE SUMADO: " << maxPuntajeRonda << endl;
+		ronda++;
+		system("pause");
+	}
+
+	cout << "\nFELICIDADES " << nombreJugador << "! GANASTE LA PARTIDA!" << endl;
+	cout << "PUNTAJE FINAL: " << puntajeTotal << endl;
 }
 
 #endif // FUNCIONES_H_INCLUDED

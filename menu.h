@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "funciones.h"
+#include "constantes.h"
 using namespace std;
 
 void menu();
@@ -10,6 +11,8 @@ void menu();
 void menu() {
     int opcion;
     int vDados[6] = { 0 };
+    string jugador1, jugador2, cpu = "CPU";
+    string nombre[2] = {};
 
     while (true) {
         system("cls");
@@ -26,7 +29,7 @@ void menu() {
 
         switch (opcion) {
         case 1:
-            tirarDados(vDados,6);
+            jugar(PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
             break;
 
         case 2:
@@ -34,7 +37,7 @@ void menu() {
             break;
 
         case 3:
-
+            mostrarMaxPuntuacion(usuarioMaxPuntuacion, maxPuntuacion);
             break;
 
         case 0:
