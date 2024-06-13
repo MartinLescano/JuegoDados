@@ -35,6 +35,8 @@ bool seisIguales(int vDados[]);
 
 int jugarSimulado(int vDados[], int tirarDadosManual, int sumarDados, int ordenarDados, int escalera, int seisDeseis, int seisIguales, int tam); //Para ver la funcionalidad de cada funcion
 
+void copiarTirarDados(int vDados[], int vDados2[], int tam);//Copia la funcion tirar dados
+
 
 //IMPLEMENTACION DE FUNCIONES
 
@@ -279,6 +281,29 @@ int jugarSimulado(int vDados[], int tirarDadosManual, int sumarDados, int ordena
 			}
 		}
 	}
+}
+
+void copiarTirarDados(int vDados[], int vDados2[], int tam)
+{
+	cout << "La copia del los dados es: ";
+	int i;
+	for (i = 0; i < tam; i++)
+	{
+		vDados2[i] = vDados[i];
+		cout << vDados2[i] << "\t";
+	}
+}
+
+void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion) {
+	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
+	cout << "                                                           " << endl;
+	cout << "                   MAXIMA PUNTUACION                       " << endl;
+	cout << "                                                           " << endl;
+	cout << "              JUGADOR: "<< usuarioMaxPuntuacion<< endl;
+	cout << "                                                           " << endl;
+	cout << "              PUNTOS: " << maxPuntuacion << "PUNTOS" << endl;
+	cout << "                                                           " << endl;
+	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
 }
 
 #endif // FUNCIONES_H_INCLUDED
