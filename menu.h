@@ -1,10 +1,4 @@
-#ifndef MENU_H_INCLUDED
-#define MENU_H_INCLUDED
-
-#include <iostream>
-#include "funciones.h"
-#include "constantes.h"
-using namespace std;
+#pragma once
 
 void menu();
 
@@ -34,18 +28,18 @@ void menu() {
 
         switch (opcion) {
         case 1:
-            jugar(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
+            jugarSolo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
             break;
 
         case 2:
-            jugar(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
+            jugarDuo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
             break;
 
         case 3:
             mostrarMaxPuntuacion(usuarioMaxPuntuacion, maxPuntuacion);
             break;
         case 4:
-            jugarSimulado(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
+            jugarSimulado(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
             break;
         case 0:
 
@@ -59,5 +53,3 @@ void menu() {
     }
 }
 
-
-#endif // MENU_H_INCLUDED
