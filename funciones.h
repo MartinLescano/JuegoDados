@@ -8,25 +8,21 @@ using namespace std;
 
 //DECLARACION DE FUNCIONES
 
-//void pedirNombre(string& nombre); //Asigna el nombre ingresado a una variable por referencia
-
 void pedirNombre(string nombreJugador[], int opcion); //Asigna el nombre ingresado a una variable por referencia
 
 void tirarDados(int vDados[], int tam); //Carga un vector de un tamaño especificado con numeros aleatorios 1-6, recibe una constante por valor de la cantidad de lanzamientos por turno
 
 void mostrarDados(int vDados[], int tam); //Muestra los valores obtenidos
 
-void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]); // Llama a las demas funciones hasta que la partida termina
+void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[], string& usuarioMaxPuntuacion, int& maxPuntuacion); // Llama a las demas funciones hasta que la partida termina
 
-void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion); // Muestra la puntuacion maxima lograda y el usuario correspondiente
+void mostrarMaxPuntuacion(string &usuarioMaxPuntuacion, int &maxPuntuacion); // Muestra la puntuacion maxima lograda y el usuario correspondiente
 
-int calcularPuntos(int vDados[], int tam, int PUNTAJEOBJETIVO); // Devuelve los puntos segun las combinaciones de los dados
+int calcularPuntos(int vDados[], int tam, int PUNTAJEOBJETIVO); // Devuelve los maxPuntuacion segun las combinaciones de los dados
 
 void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPuntajeRonda, int nroLanzamiento); // Muestra la interfaz de usuario durante los lanzamientos
 
-//void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal); // Muestra la interfaz del o los usuarios entre los turnos
-
-void  mostrarInterfazEntreTurno(int ronda, string nombre[], int indice, int totalJ1, int totalJ2);
+void mostrarInterfazEntreTurno(int ronda, string nombre[], int indice, int totalJ1, int totalJ2);
 
 int sumarDados(int vDados[]);
 
@@ -44,32 +40,24 @@ void copiarTirarDados(int vDados[], int vDados2[], int tam);//Copia la funcion t
 
 void jugarSolo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]);
 
-void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]);
+void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[], string &usuarioMaxPuntuacion, int &maxPuntuacion);
 
 void jugarSimulado(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]);
 
-//IMPLEMENTACION DE FUNCIONES
 
-//void pedirNombre(string& nombre) {
-//	system("cls");
-//	cout << "Ingresar nombre del jugador: ";
-//
-//	cin.ignore();
-//	getline(cin, nombre);
-//
-//	system("cls");
-//}
+
+//IMPLEMENTACION DE FUNCIONES
 
 void pedirNombre(string nombreJugador[], int opcion) {
 	string nombreJug;
 
-	if (opcion == 1) //si la opción es '1' completa 1 solo jugador
+	if (opcion == 1 || opcion == 4) //si la opción es '1' completa 1 solo jugador
 	{
 		cout << "Ingresar nombre para Jugador 1: ";
 		cin.ignore();
 		getline(cin, nombreJug);
 		nombreJugador[0] = nombreJug;
-		nombreJugador[1] = "CPU";
+		//nombreJugador[1] = "CPU";
 	}
 	else  // Sino, permite ingresar dos jugadores
 	{
@@ -103,21 +91,6 @@ void mostrarInterfazTurno(string usuario, int ronda, int puntajeTotal, int maxPu
 	cout << "LANZAMIENTO Nro " << nroLanzamiento << endl;
 	cout << "-------------------------------------------------------------------" << endl;
 }
-
-//void mostrarInterfazEntreTurno(string usuario, int ronda, int puntajeTotal) {
-//
-//	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
-//	cout << "'                                                         '" << endl;
-//	cout << "'                     RONDA Nº                            '" << endl;
-//	cout << "'                PROXIMO TURNO: JAVIER                    '" << endl;
-//	cout << "'                                                         '" << endl;
-//	cout << "'               PUNTAJE MARTA: 70 PUNTOS                  '" << endl;
-//	cout << "'                                                         '" << endl;
-//	cout << "'               PUNTAJE JAVIER: 70 PUNTOS                 '" << endl;
-//	cout << "'                                                         '" << endl;
-//	cout << "'- - - - - - - - - - - - - - - - - - - - - - - - - - - - -'" << endl;
-//
-//}
 
 void  mostrarInterfazEntreTurno(int ronda, string nombre[], int indice, int totalJ1, int totalJ2) {
 	cout << "*-----------------------------------------*" << endl;
@@ -345,22 +318,27 @@ void copiarTirarDados(int vDados[], int vDados2[], int tam)
 	}
 }
 
-void mostrarMaxPuntuacion(string usuarioMaxPuntuacion, int maxPuntuacion) {
+void mostrarMaxPuntuacion(string &usuarioMaxPuntuacion, int &maxPuntuacion) {
+
 	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
 	cout << "                                                           " << endl;
 	cout << "                   MAXIMA PUNTUACION                       " << endl;
 	cout << "                                                           " << endl;
-	cout << "              JUGADOR: "<< usuarioMaxPuntuacion<< endl;
+	cout << "              JUGADOR: "<< usuarioMaxPuntuacion << endl;
 	cout << "                                                           " << endl;
-	cout << "              PUNTOS: " << maxPuntuacion << "PUNTOS" << endl;
+	cout << "              PUNTOS: " << maxPuntuacion<< " PUNTOS" << endl;
 	cout << "                                                           " << endl;
 	cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << endl;
+	system("pause");
+	system("cls");
 }
 
-void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
+void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[], string& usuarioMaxPuntuacion, int& maxPuntuacion) {
 
 	int puntajeTotal = 0, ronda = 1; //Inicialización de variables
 	int puntajeLanzamiento;
+	/*int maxPuntuacion = 0;
+	string usuarioMaxPuntuacion;*/
 
 	//A CADA JUGADOR LE CORRESPONDE UN INDICE DE MAXIMO PUNTAJE Y DE TOTAL
 	int vMaxPuntajeRonda[2] = { 0 }, vTotal[2] = { 0 };
@@ -390,7 +368,10 @@ void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZ
 					mostrarInterfazTurno(nombreJugador[j], ronda, vTotal[j], vMaxPuntajeRonda[j], i + 1);
 					mostrarDados(vDados, CANTIDAD_DADOS);
 					cout << "\n¡ESCALERA! !GANASTE LA PARTIDA¡" << endl;
-					break; //Sale del ciclo for
+					vTotal[j] = 100;
+					system("pause");
+					system("cls");
+					return; //Sale del ciclo for
 				}
 				else if (puntajeLanzamiento == 0) { //Si hay seis 6, resetea el puntaje a 0
 					vMaxPuntajeRonda[j] = puntajeLanzamiento;
@@ -408,6 +389,7 @@ void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZ
 				mostrarDados(vDados, CANTIDAD_DADOS);
 				system("pause");
 				system("cls");
+
 			}
 
 		}
@@ -422,7 +404,7 @@ void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZ
 			vMaxPuntajeRonda[i] = 0;
 		}
 
-		//IF para ver si la suma de cada uno llegó a 100 puntos
+		//IF para ver si la suma de cada uno llegó a 100 maxPuntuacion
 		if (vTotal[0] >= 100)
 		{
 			cout << "*-----------------------------------------*" << endl;
@@ -443,6 +425,23 @@ void jugarDuo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZ
 			system("pause");
 			break;
 		}
+
+		/*if (vTotal[0] > vTotal[1])
+		{
+			if (vTotal[0] > maxPuntuacion)
+			{
+				maxPuntuacion = vTotal[0];
+				usuarioMaxPuntuacion = nombreJugador[0];
+			}
+		}
+		else
+		{
+			if (vTotal[1] > maxPuntuacion)
+			{
+				maxPuntuacion = vTotal[1];
+				usuarioMaxPuntuacion = nombreJugador[1];
+			}
+		}*/
 
 		ronda++;
 		//system("pause");
@@ -508,7 +507,7 @@ void jugarSolo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LAN
 			vMaxPuntajeRonda[i] = 0;
 		}
 
-		//IF para ver si la suma de cada uno llegó a 100 puntos
+		//IF para ver si la suma de cada uno llegó a 100 maxPuntuacion
 		if (vTotal[0] >= 100)
 		{
 			cout << "*-----------------------------------------*" << endl;
@@ -526,6 +525,7 @@ void jugarSolo(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LAN
 }
 
 void jugarSimulado(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
+	cout << "INGRESASTE AL MODO TESTING!" << endl;
 	int puntajeTotal = 0, ronda = 1; //Inicialización de variables
 	int puntajeLanzamiento;
 
@@ -591,7 +591,7 @@ void jugarSimulado(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int
 			vMaxPuntajeRonda[i] = 0;
 		}
 
-		//IF para ver si la suma de cada uno llegó a 100 puntos
+		//IF para ver si la suma de cada uno llegó a 100 maxPuntuacion
 		if (vTotal[0] >= 100)
 		{
 			cout << "*-----------------------------------------*" << endl;
@@ -608,14 +608,14 @@ void jugarSimulado(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int
 	}
 }
 
-void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[]) {
+void jugar(string nombreJugador[], int opcion, int PUNTAJE_OBJETIVO, int LANZAMIENTOS_POR_RONDA, int CANTIDAD_DADOS, int vDados[], string& usuarioMaxPuntuacion, int& maxPuntuacion) {
 	switch (opcion)
 	{
 	case 1:
 		jugarSolo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
 		break;
 	case 2:
-		jugarDuo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados);
+		jugarDuo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
 		break;
 	default:
 		break;
