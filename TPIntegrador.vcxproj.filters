@@ -7,5 +7,6 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="funciones.h" />
     <ClInclude Include="constantes.h" />
+    <ClInclude Include="rlutil.h" />
   </ItemGroup>
 </Project>

@@ -14,12 +14,12 @@ void menu() {
         system("cls");
         cout << "----------MENU PRINCIPAL----------" << endl;
         cout << endl;
-        cout << "1- SOLITARIO" << endl;
-        cout << "2- DUELO" << endl;
+        cout << "   1- SOLITARIO" << endl;
+        cout << "   2- DUELO" << endl;
         cout << "----------------------------------" << endl;
-        cout << "3- PUNTUACION MAS ALTA" << endl;
+        cout << "   3- PUNTUACION MAS ALTA" << endl;
         //      "4-MODO SIMULADO
-        cout << "0- SALIR" << endl;
+        cout << "   0- SALIR" << endl;
         cout << endl;
         cout << "----------------------------------" << endl;
         cout << endl;
@@ -28,21 +28,19 @@ void menu() {
 
         switch (opcion) {
         case 1:
-            jugarSolo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
+            jugarSolo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion, MODO_SIMULADO);
             break;
 
         case 2:
-            jugarDuo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
+            jugarDuo(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion, MODO_SIMULADO);
             break;
 
         case 3:
             mostrarMaxPuntuacion(usuarioMaxPuntuacion, maxPuntuacion);
             break;
-        case 4:
-            jugarSimulado(nombreJugador, opcion, PUNTAJE_OBJETIVO, LANZAMIENTOS_POR_RONDA, CANTIDAD_DADOS, vDados, usuarioMaxPuntuacion, maxPuntuacion);
-            break;
-        case 0:
 
+        case 0:
+            
             return;
 
         default:

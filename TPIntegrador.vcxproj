@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="constantes.h" />
     <ClInclude Include="funciones.h" />
+    <ClInclude Include="rlutil.h" />
     <ClInclude Include="menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
