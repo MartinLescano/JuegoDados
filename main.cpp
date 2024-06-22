@@ -2,12 +2,12 @@
 #include <locale.h>
 #include <ctime>
 #include <string>
-
-using namespace  std;
 #include "rlutil.h"
+using namespace  std;
 #include "funciones.h"
 #include "constantes.h"
 #include "menu.h"
+
 
 int main()
 {
